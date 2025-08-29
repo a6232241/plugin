@@ -33,7 +33,7 @@ nearest_fps() {
   echo $nearest
 }
 
-for file in "$INPUT_DIR"/*.{mov,mp4}; do
+for file in "$INPUT_DIR"/*.{mov,mp4,MOV}; do
   [ -e "$file" ] || continue
 
   avg=$(ffprobe -v error -select_streams v:0 -show_entries stream=avg_frame_rate \
@@ -49,8 +49,11 @@ for file in "$INPUT_DIR"/*.{mov,mp4}; do
   if [ "$avg_fps" != "$rfr_fps" ]; then
     target_fps=$(nearest_fps $avg_fps)
     echo "⚠️ 可變幀率 → 轉換成 $target_fps fps"
-    ffmpeg -i "$file" -c:v libx264 -r $target_fps -pix_fmt yuv420p -c:a aac -b:a 128k \
-      "$OUTPUT_DIR/$(basename "${file%.*}")_${target_fps}fps.mp4"
+
+    ext="${file##*.}"
+    output_file="$OUTPUT_DIR/$(basename "${file%.*}")_${target_fps}fps.$ext"
+    ffmpeg -i "$file" -map_metadata 0 -c:v libx264 -r $target_fps -pix_fmt yuv420p -c:a copy -b:a 128k "$output_file"
+    touch -r "$file" "$output_file"
   else
     echo "✅ 固定幀率 → 直接複製"
     cp "$file" "$OUTPUT_DIR/"
