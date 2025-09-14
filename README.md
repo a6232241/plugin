@@ -17,3 +17,10 @@
 
 依賴工具：ffmpeg
 開發原因：iOS 在 QuickTime 或相簿中，因為取得異常的理論幀率和時間單位
+
+### `downloadYoutubeMusic.sh`
+下載 Youtube 的音訊檔
+
+依賴工具：yt-dlp
+
+
