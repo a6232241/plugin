@@ -3,7 +3,7 @@ while true; do
     url="$1"
     break
   else
-    echo "請輸入 YouTube 影片的網址:"
+    echo "請輸入 Spotify 音樂的網址:"
     read -r url
   fi
 
@@ -19,15 +19,9 @@ OUTPUT_DIR="./DownloadedMusic"
 mkdir -p "$OUTPUT_DIR"
 cd "$OUTPUT_DIR" || exit
 
-# 使用 yt-dlp 下載音樂 (mp3 格式)，並嵌入字幕、縮圖和元數據
+# 使用 spotdl 下載音訊，並自動並嵌入字幕、縮圖和元數據
 # 相同音樂不會覆蓋
-yt-dlp -f "ba" --output "%(title)s.%(ext)s" --write-subs --embed-thumbnail --add-metadata --extract-audio --audio-format mp3 "$url"
-
-# 查看字幕列表
-# yt-dlp --list-subs "$url"
-
-# 匯出資訊
-# yt-dlp -j "$url" > info.json
+python3 -m spotdl "$url"
 
 echo "下載完成！ 以儲存至 $OUTPUT_DIR 目錄中。"
 

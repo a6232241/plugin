@@ -23,4 +23,8 @@
 
 依賴工具：yt-dlp
 
+### `downloadSpotifyMusic.sh`
+下載 Spotify 的音訊檔
 
+依賴工具：python 3.7, spotDL
+開發原因：downloadYoutubeMusic.sh 下載的音訊檔，meta 資訊不完整或不正確
